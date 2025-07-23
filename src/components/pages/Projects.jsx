@@ -153,23 +153,6 @@ const handleAddProject = async (projectData) => {
           />
           <div className="flex gap-2">
             <Button
-              onClick={() => {
-                // Demo notification trigger - simulate completing a random project
-                const activeProjects = filteredProjects.filter(p => p.status !== "Completed");
-                if (activeProjects.length > 0) {
-                  const randomProject = activeProjects[Math.floor(Math.random() * activeProjects.length)];
-                  handleProjectUpdate(randomProject.Id, { 
-                    status: "Completed", 
-                    progress: 100 
-                  });
-                }
-              }}
-              variant="outline"
-              className="whitespace-nowrap"
-            >
-              Demo Complete
-            </Button>
-            <Button
               onClick={() => setIsAddModalOpen(true)}
               className="whitespace-nowrap"
             >
