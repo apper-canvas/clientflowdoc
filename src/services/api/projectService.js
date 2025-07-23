@@ -1,4 +1,5 @@
 import projectsData from "@/services/mockData/projects.json";
+import { notificationService } from "./notificationService";
 
 let projects = [...projectsData];
 
@@ -34,11 +35,25 @@ export const projectService = {
     return { ...newProject };
   },
 
-  async update(id, projectData) {
+async update(id, projectData) {
     await delay(350);
     const index = projects.findIndex(p => p.Id === parseInt(id));
     if (index !== -1) {
+      const oldProject = { ...projects[index] };
       projects[index] = { ...projects[index], ...projectData };
+      
+      // Create notification if project was just completed
+      if (oldProject.status !== "Completed" && projectData.status === "Completed") {
+        try {
+          await notificationService.createProjectCompletionNotification(
+            projects[index].name, 
+            projects[index].Id
+          );
+        } catch (error) {
+          console.error("Failed to create completion notification:", error);
+        }
+      }
+      
       return { ...projects[index] };
     }
     return null;

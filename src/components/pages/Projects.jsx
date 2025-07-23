@@ -78,7 +78,7 @@ const handleStatusFilter = (status) => {
     setStatusFilter(status);
   };
 
-  const handleAddProject = async (projectData) => {
+const handleAddProject = async (projectData) => {
     try {
       const newProject = await projectService.create(projectData);
       setProjects(prev => [...prev, newProject]);
@@ -88,6 +88,29 @@ const handleStatusFilter = (status) => {
     } catch (error) {
       toast.error("Failed to create project. Please try again.");
       throw error;
+    }
+  };
+
+  const handleProjectUpdate = async (projectId, updateData) => {
+    try {
+      const updatedProject = await projectService.update(projectId, updateData);
+      if (updatedProject) {
+        setProjects(prev => 
+          prev.map(p => p.Id === projectId ? updatedProject : p)
+        );
+        setFilteredProjects(prev => 
+          prev.map(p => p.Id === projectId ? updatedProject : p)
+        );
+        
+        // Show completion notification
+        if (updateData.status === "Completed") {
+          toast.success(`🎉 ${updatedProject.name} has been completed!`);
+        } else {
+          toast.success("Project updated successfully!");
+        }
+      }
+    } catch (error) {
+      toast.error("Failed to update project. Please try again.");
     }
   };
   useEffect(() => {
@@ -128,12 +151,31 @@ const handleStatusFilter = (status) => {
             onSearch={handleSearch}
             className="w-full sm:w-64"
           />
-          <Button
-            onClick={() => setIsAddModalOpen(true)}
-            className="whitespace-nowrap"
-          >
-            Add Project
-          </Button>
+          <div className="flex gap-2">
+            <Button
+              onClick={() => {
+                // Demo notification trigger - simulate completing a random project
+                const activeProjects = filteredProjects.filter(p => p.status !== "Completed");
+                if (activeProjects.length > 0) {
+                  const randomProject = activeProjects[Math.floor(Math.random() * activeProjects.length)];
+                  handleProjectUpdate(randomProject.Id, { 
+                    status: "Completed", 
+                    progress: 100 
+                  });
+                }
+              }}
+              variant="outline"
+              className="whitespace-nowrap"
+            >
+              Demo Complete
+            </Button>
+            <Button
+              onClick={() => setIsAddModalOpen(true)}
+              className="whitespace-nowrap"
+            >
+              Add Project
+            </Button>
+          </div>
         </div>
       </motion.div>
 
