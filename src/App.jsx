@@ -6,6 +6,7 @@ import Clients from "@/components/pages/Clients";
 import Projects from "@/components/pages/Projects";
 import Tasks from "@/components/pages/Tasks";
 import Profile from "@/components/pages/Profile";
+import Settings from "@/components/pages/Settings";
 const AppContent = () => {
   const location = useLocation();
   
@@ -19,8 +20,10 @@ const getPageTitle = () => {
         return "Projects";
       case "/tasks":
         return "Tasks";
-      case "/profile":
+case "/profile":
         return "Profile";
+      case "/settings":
+        return "Settings";
       default:
         return "ClientFlow";
     }
@@ -34,6 +37,7 @@ const getPageTitle = () => {
         <Route path="/projects" element={<Projects />} />
         <Route path="/tasks" element={<Tasks />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/settings" element={<Settings />} />
       </Routes>
     </Layout>
   );
