@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { toast } from "react-toastify";
 import ClientCard from "@/components/organisms/ClientCard";
 import SearchBar from "@/components/molecules/SearchBar";
+import Button from "@/components/atoms/Button";
 import Loading from "@/components/ui/Loading";
 import Error from "@/components/ui/Error";
 import Empty from "@/components/ui/Empty";
+import AddClientModal from "@/components/organisms/AddClientModal";
 import { clientService } from "@/services/api/clientService";
 
 const Clients = () => {
@@ -13,7 +16,7 @@ const Clients = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-
+  const [showAddModal, setShowAddModal] = useState(false);
   const loadClients = async () => {
     try {
       setLoading(true);
@@ -39,6 +42,18 @@ const Clients = () => {
         client.email.toLowerCase().includes(query.toLowerCase())
       );
       setFilteredClients(filtered);
+    }
+};
+
+  const handleAddClient = async (clientData) => {
+    try {
+      const newClient = await clientService.create(clientData);
+      setClients(prev => [...prev, newClient]);
+      setFilteredClients(prev => [...prev, newClient]);
+      setShowAddModal(false);
+      toast.success("Client added successfully!");
+    } catch (err) {
+      toast.error("Failed to add client. Please try again.");
     }
   };
 
@@ -69,12 +84,20 @@ const Clients = () => {
           <p className="text-gray-600 mt-1">
             Manage your client relationships and contacts
           </p>
+</div>
+        <div className="flex flex-col sm:flex-row gap-3">
+          <SearchBar
+            placeholder="Search clients..."
+            onSearch={handleSearch}
+            className="w-full sm:w-80"
+          />
+          <Button
+            onClick={() => setShowAddModal(true)}
+            className="whitespace-nowrap"
+          >
+            Add Client
+          </Button>
         </div>
-        <SearchBar
-          placeholder="Search clients..."
-          onSearch={handleSearch}
-          className="w-full sm:w-80"
-        />
       </motion.div>
 
       {/* Results Info */}
@@ -102,8 +125,8 @@ const Clients = () => {
               : "Start by adding your first client to get organized"
           }
           icon="Users"
-          actionLabel="Add Client"
-          onAction={() => console.log("Add client")}
+actionLabel="Add Client"
+          onAction={() => setShowAddModal(true)}
         />
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -115,7 +138,14 @@ const Clients = () => {
             />
           ))}
         </div>
-      )}
+)}
+
+      {/* Add Client Modal */}
+      <AddClientModal
+        isOpen={showAddModal}
+        onClose={() => setShowAddModal(false)}
+        onSubmit={handleAddClient}
+      />
     </div>
   );
 };
