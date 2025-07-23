@@ -5,11 +5,11 @@ import Dashboard from "@/components/pages/Dashboard";
 import Clients from "@/components/pages/Clients";
 import Projects from "@/components/pages/Projects";
 import Tasks from "@/components/pages/Tasks";
-
+import Profile from "@/components/pages/Profile";
 const AppContent = () => {
   const location = useLocation();
   
-  const getPageTitle = () => {
+const getPageTitle = () => {
     switch (location.pathname) {
       case "/":
         return "Dashboard";
@@ -19,6 +19,8 @@ const AppContent = () => {
         return "Projects";
       case "/tasks":
         return "Tasks";
+      case "/profile":
+        return "Profile";
       default:
         return "ClientFlow";
     }
@@ -26,11 +28,12 @@ const AppContent = () => {
 
   return (
     <Layout title={getPageTitle()}>
-      <Routes>
+<Routes>
         <Route path="/" element={<Dashboard />} />
         <Route path="/clients" element={<Clients />} />
         <Route path="/projects" element={<Projects />} />
         <Route path="/tasks" element={<Tasks />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </Layout>
   );
