@@ -1,23 +1,24 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { toast } from "react-toastify";
 import ProjectCard from "@/components/organisms/ProjectCard";
 import SearchBar from "@/components/molecules/SearchBar";
 import Loading from "@/components/ui/Loading";
 import Error from "@/components/ui/Error";
 import Empty from "@/components/ui/Empty";
 import Button from "@/components/atoms/Button";
+import AddProjectModal from "@/components/organisms/AddProjectModal";
 import { projectService } from "@/services/api/projectService";
 import { clientService } from "@/services/api/clientService";
-
 const Projects = () => {
-  const [projects, setProjects] = useState([]);
+const [projects, setProjects] = useState([]);
   const [clients, setClients] = useState([]);
   const [filteredProjects, setFilteredProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
-
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const statusOptions = [
     { value: "all", label: "All Projects" },
     { value: "not started", label: "Not Started" },
@@ -73,10 +74,22 @@ const Projects = () => {
     setSearchQuery(query);
   };
 
-  const handleStatusFilter = (status) => {
+const handleStatusFilter = (status) => {
     setStatusFilter(status);
   };
 
+  const handleAddProject = async (projectData) => {
+    try {
+      const newProject = await projectService.create(projectData);
+      setProjects(prev => [...prev, newProject]);
+      setFilteredProjects(prev => [...prev, newProject]);
+      setIsAddModalOpen(false);
+      toast.success("Project created successfully!");
+    } catch (error) {
+      toast.error("Failed to create project. Please try again.");
+      throw error;
+    }
+  };
   useEffect(() => {
     loadData();
   }, []);
@@ -109,12 +122,18 @@ const Projects = () => {
             Track progress and manage project deliverables
           </p>
         </div>
-        <div className="flex flex-col sm:flex-row gap-3">
+<div className="flex flex-col sm:flex-row gap-3">
           <SearchBar
             placeholder="Search projects..."
             onSearch={handleSearch}
             className="w-full sm:w-64"
           />
+          <Button
+            onClick={() => setIsAddModalOpen(true)}
+            className="whitespace-nowrap"
+          >
+            Add Project
+          </Button>
         </div>
       </motion.div>
 
@@ -163,8 +182,8 @@ const Projects = () => {
               : "Create your first project to start tracking progress"
           }
           icon="Briefcase"
-          actionLabel="Create Project"
-          onAction={() => console.log("Create project")}
+actionLabel="Create Project"
+          onAction={() => setIsAddModalOpen(true)}
         />
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -177,7 +196,14 @@ const Projects = () => {
             />
           ))}
         </div>
-      )}
+)}
+
+      <AddProjectModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        onSubmit={handleAddProject}
+        clients={clients}
+      />
     </div>
   );
 };
