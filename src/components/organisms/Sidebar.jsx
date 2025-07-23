@@ -35,8 +35,8 @@ const Sidebar = ({ isOpen, onClose }) => {
         <div className="flex-1 flex flex-col min-h-0 bg-white border-r border-gray-200">
           <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
             <div className="flex items-center flex-shrink-0 px-6 mb-8">
-              <div className="w-10 h-10 gradient-primary rounded-lg flex items-center justify-center">
-                <ApperIcon name="Zap" size={24} className="text-white" />
+<div className="w-10 h-10 bg-gray-200 rounded-lg flex items-center justify-center">
+                <ApperIcon name="Zap" size={24} className="text-gray-700" />
               </div>
               <h1 className="ml-3 text-xl font-bold font-display text-gray-900">
                 ClientFlow
@@ -49,9 +49,9 @@ const Sidebar = ({ isOpen, onClose }) => {
                   <NavLink
                     key={item.name}
                     to={item.href}
-                    className={`group flex items-center px-3 py-2.5 text-sm font-medium rounded-lg transition-all duration-200 ${
+className={`group flex items-center px-3 py-2.5 text-sm font-medium rounded-lg transition-all duration-200 ${
                       isActive
-                        ? "gradient-primary text-white shadow-lg"
+                        ? "bg-primary-50 text-primary-700 border border-primary-200"
                         : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
                     }`}
                   >

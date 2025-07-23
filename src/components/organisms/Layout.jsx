@@ -6,7 +6,7 @@ const Layout = ({ children, title }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="h-screen flex overflow-hidden bg-gray-50">
+<div className="h-screen flex overflow-hidden bg-white">
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       
       <div className="flex flex-col flex-1 overflow-hidden lg:ml-64">

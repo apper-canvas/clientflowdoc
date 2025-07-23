@@ -84,19 +84,19 @@ const Header = ({ title, onMenuClick }) => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={handleNotificationClick}
-              className={`p-2 rounded-lg transition-colors ${
+className={`p-2 rounded-lg transition-colors ${
                 showNotifications 
-                  ? 'text-primary-600 bg-primary-50' 
-                  : 'text-gray-400 hover:text-gray-600 hover:bg-gray-100'
+                  ? 'text-primary-600 bg-gray-100' 
+                  : 'text-gray-400 hover:text-gray-600 hover:bg-gray-50'
               }`}
               aria-label={`Notifications ${unreadCount > 0 ? `(${unreadCount} unread)` : ''}`}
             >
               <ApperIcon name="Bell" size={20} />
               {unreadCount > 0 && (
-                <motion.div
+<motion.div
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
-                  className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center"
+                  className="absolute -top-1 -right-1 w-5 h-5 bg-accent-500 text-white text-xs font-bold rounded-full flex items-center justify-center"
                 >
                   {unreadCount > 99 ? '99+' : unreadCount}
                 </motion.div>
@@ -110,8 +110,8 @@ const Header = ({ title, onMenuClick }) => {
             />
           </div>
           
-          <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-full flex items-center justify-center">
-            <ApperIcon name="User" size={16} className="text-white" />
+<div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
+            <ApperIcon name="User" size={16} className="text-gray-600" />
           </div>
         </div>
       </div>

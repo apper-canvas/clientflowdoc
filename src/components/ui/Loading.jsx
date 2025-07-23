@@ -10,7 +10,7 @@ const Loading = ({ type = "default" }) => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
-            className="bg-white rounded-xl card-shadow p-6"
+className="bg-white rounded-lg card-shadow p-8 border border-gray-100"
           >
             <div className="animate-pulse">
               <div className="h-4 bg-gradient-to-r from-gray-200 to-gray-300 rounded mb-3"></div>
@@ -57,7 +57,7 @@ const Loading = ({ type = "default" }) => {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: index * 0.05 }}
-            className="bg-white rounded-lg card-shadow p-4"
+className="bg-white rounded-lg card-shadow p-6 border border-gray-100"
           >
             <div className="animate-pulse">
               <div className="flex items-center space-x-4">
@@ -85,7 +85,7 @@ const Loading = ({ type = "default" }) => {
           <motion.div
             animate={{ rotate: 360 }}
             transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-            className="w-16 h-16 rounded-full border-4 border-gray-200 border-t-primary-500"
+className="w-16 h-16 rounded-full border-4 border-gray-100 border-t-primary-500"
           />
         </div>
         <p className="text-gray-600 font-medium">Loading...</p>
