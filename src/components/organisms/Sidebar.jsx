@@ -55,10 +55,10 @@ className={`group flex items-center px-3 py-2.5 text-sm font-medium rounded-lg t
                         : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
                     }`}
                   >
-                    <ApperIcon
+<ApperIcon
                       name={item.icon}
                       size={20}
-                      className={`mr-3 ${isActive ? "text-white" : "text-gray-400 group-hover:text-gray-600"}`}
+                      className={`mr-3 ${isActive ? "text-primary-700" : "text-gray-400 group-hover:text-gray-600"}`}
                     />
                     {item.name}
                   </NavLink>
