@@ -1,0 +1,50 @@
+[
+  {
+    "Id": 1,
+    "name": "Sarah Johnson",
+    "company": "TechStart Solutions",
+    "email": "sarah@techstart.com",
+    "phone": "(555) 123-4567",
+    "createdAt": "2024-01-15T10:00:00Z"
+  },
+  {
+    "Id": 2,
+    "name": "Michael Chen",
+    "company": "Digital Dynamics",
+    "email": "m.chen@digitaldynamics.com",
+    "phone": "(555) 234-5678",
+    "createdAt": "2024-01-20T14:30:00Z"
+  },
+  {
+    "Id": 3,
+    "name": "Emily Rodriguez",
+    "company": "Creative Labs",
+    "email": "emily@creativelabs.io",
+    "phone": "(555) 345-6789",
+    "createdAt": "2024-02-05T09:15:00Z"
+  },
+  {
+    "Id": 4,
+    "name": "David Thompson",
+    "company": "Global Ventures",
+    "email": "d.thompson@globalventures.com",
+    "phone": "(555) 456-7890",
+    "createdAt": "2024-02-12T16:45:00Z"
+  },
+  {
+    "Id": 5,
+    "name": "Lisa Wang",
+    "company": "Innovation Hub",
+    "email": "lisa@innovationhub.org",
+    "phone": "(555) 567-8901",
+    "createdAt": "2024-02-18T11:20:00Z"
+  },
+  {
+    "Id": 6,
+    "name": "Robert Martinez",
+    "company": "Future Systems",
+    "email": "robert@futuresystems.net",
+    "phone": "(555) 678-9012",
+    "createdAt": "2024-02-25T13:00:00Z"
+  }
+]

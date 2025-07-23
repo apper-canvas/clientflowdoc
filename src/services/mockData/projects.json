@@ -1,0 +1,65 @@
+[
+  {
+    "Id": 1,
+    "title": "E-commerce Website Redesign",
+    "clientId": 1,
+    "status": "In Progress",
+    "deadline": "2024-04-15T23:59:59Z",
+    "progress": 65,
+    "description": "Complete redesign of the e-commerce platform with improved UX and mobile optimization."
+  },
+  {
+    "Id": 2,
+    "title": "Mobile App Development",
+    "clientId": 2,
+    "status": "Review",
+    "deadline": "2024-03-30T23:59:59Z",
+    "progress": 90,
+    "description": "Native iOS and Android app for customer engagement and loyalty program."
+  },
+  {
+    "Id": 3,
+    "title": "Brand Identity Package",
+    "clientId": 3,
+    "status": "Completed",
+    "deadline": "2024-03-01T23:59:59Z",
+    "progress": 100,
+    "description": "Complete brand identity including logo, color palette, and style guidelines."
+  },
+  {
+    "Id": 4,
+    "title": "CRM System Integration",
+    "clientId": 4,
+    "status": "Not Started",
+    "deadline": "2024-05-20T23:59:59Z",
+    "progress": 0,
+    "description": "Integration of existing systems with new CRM platform and data migration."
+  },
+  {
+    "Id": 5,
+    "title": "SEO Optimization Campaign",
+    "clientId": 5,
+    "status": "In Progress",
+    "deadline": "2024-04-10T23:59:59Z",
+    "progress": 45,
+    "description": "Comprehensive SEO audit and optimization for improved search rankings."
+  },
+  {
+    "Id": 6,
+    "title": "Social Media Strategy",
+    "clientId": 6,
+    "status": "In Progress",
+    "deadline": "2024-03-25T23:59:59Z",
+    "progress": 30,
+    "description": "Development of social media strategy and content calendar for Q2."
+  },
+  {
+    "Id": 7,
+    "title": "Website Maintenance",
+    "clientId": 1,
+    "status": "Review",
+    "deadline": "2024-03-20T23:59:59Z",
+    "progress": 85,
+    "description": "Monthly website maintenance, security updates, and performance optimization."
+  }
+]
