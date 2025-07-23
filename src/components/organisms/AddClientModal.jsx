@@ -6,11 +6,12 @@ import Label from "@/components/atoms/Label";
 import ApperIcon from "@/components/ApperIcon";
 
 const AddClientModal = ({ isOpen, onClose, onSubmit }) => {
-  const [formData, setFormData] = useState({
+const [formData, setFormData] = useState({
     name: "",
     company: "",
     email: "",
     phone: "",
+    status: "Active",
     notes: ""
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -58,11 +59,12 @@ if (!formData.email.trim()) {
     try {
       await onSubmit(formData);
       // Reset form on success
-      setFormData({
+setFormData({
         name: "",
         company: "",
         email: "",
         phone: "",
+        status: "Active",
         notes: ""
       });
       setErrors({});
@@ -75,11 +77,12 @@ if (!formData.email.trim()) {
 
   const handleClose = () => {
     if (!isSubmitting) {
-      setFormData({
+setFormData({
         name: "",
         company: "",
         email: "",
         phone: "",
+        status: "Active",
         notes: ""
       });
       setErrors({});
@@ -180,6 +183,25 @@ if (!formData.email.trim()) {
                 {errors.email && (
                   <p className="text-sm text-red-600">{errors.email}</p>
                 )}
+</div>
+              
+              {/* Status Field */}
+              <div className="space-y-2">
+                <Label htmlFor="status">
+                  Status <span className="text-red-500">*</span>
+                </Label>
+                <select
+                  id="status"
+                  name="status"
+                  value={formData.status}
+                  onChange={handleInputChange}
+                  disabled={isSubmitting}
+                  className="flex w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm transition-colors focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  <option value="Active">Active</option>
+                  <option value="Prospect">Prospect</option>
+                  <option value="Inactive">Inactive</option>
+                </select>
               </div>
               
               {/* Phone Field */}
