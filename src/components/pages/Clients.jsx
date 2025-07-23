@@ -11,12 +11,14 @@ import AddClientModal from "@/components/organisms/AddClientModal";
 import { clientService } from "@/services/api/clientService";
 
 const Clients = () => {
-  const [clients, setClients] = useState([]);
+const [clients, setClients] = useState([]);
   const [filteredClients, setFilteredClients] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState("All");
   const [showAddModal, setShowAddModal] = useState(false);
+  
   const loadClients = async () => {
     try {
       setLoading(true);
@@ -31,19 +33,37 @@ const Clients = () => {
     }
   };
 
+const applyFilters = (clientsList, search, status) => {
+    let filtered = [...clientsList];
+    
+    // Apply search filter
+    if (search.trim()) {
+      filtered = filtered.filter(client =>
+        client.name.toLowerCase().includes(search.toLowerCase()) ||
+        client.company.toLowerCase().includes(search.toLowerCase()) ||
+        client.email.toLowerCase().includes(search.toLowerCase())
+      );
+    }
+    
+    // Apply status filter
+    if (status !== "All") {
+      filtered = filtered.filter(client => client.status === status);
+    }
+    
+    return filtered;
+  };
+
   const handleSearch = (query) => {
     setSearchQuery(query);
-    if (!query.trim()) {
-      setFilteredClients(clients);
-    } else {
-      const filtered = clients.filter(client =>
-        client.name.toLowerCase().includes(query.toLowerCase()) ||
-        client.company.toLowerCase().includes(query.toLowerCase()) ||
-        client.email.toLowerCase().includes(query.toLowerCase())
-      );
-      setFilteredClients(filtered);
-    }
-};
+    const filtered = applyFilters(clients, query, statusFilter);
+    setFilteredClients(filtered);
+  };
+
+  const handleStatusFilter = (status) => {
+    setStatusFilter(status);
+    const filtered = applyFilters(clients, searchQuery, status);
+    setFilteredClients(filtered);
+  };
 
   const handleAddClient = async (clientData) => {
     try {
@@ -86,11 +106,23 @@ const Clients = () => {
           </p>
 </div>
         <div className="flex flex-col sm:flex-row gap-3">
-          <SearchBar
-            placeholder="Search clients..."
-            onSearch={handleSearch}
-            className="w-full sm:w-80"
-          />
+          <div className="flex flex-col sm:flex-row gap-3">
+            <SearchBar
+              placeholder="Search clients..."
+              onSearch={handleSearch}
+              className="w-full sm:w-80"
+            />
+            <select
+              value={statusFilter}
+              onChange={(e) => handleStatusFilter(e.target.value)}
+              className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white min-w-[120px]"
+            >
+              <option value="All">All Status</option>
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+              <option value="Prospect">Prospect</option>
+            </select>
+          </div>
           <Button
             onClick={() => setShowAddModal(true)}
             className="whitespace-nowrap"
@@ -100,28 +132,28 @@ const Clients = () => {
         </div>
       </motion.div>
 
-      {/* Results Info */}
-      {searchQuery && (
+{/* Results Info */}
+      {(searchQuery || statusFilter !== "All") && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           className="text-sm text-gray-600"
         >
           {filteredClients.length === 0 ? (
-            `No clients found for "${searchQuery}"`
+`No clients found${searchQuery ? ` for "${searchQuery}"` : ""}${statusFilter !== "All" ? ` with status "${statusFilter}"` : ""}`
           ) : (
-            `Found ${filteredClients.length} client${filteredClients.length === 1 ? "" : "s"} matching "${searchQuery}"`
+            `Found ${filteredClients.length} client${filteredClients.length === 1 ? "" : "s"}${searchQuery ? ` matching "${searchQuery}"` : ""}${statusFilter !== "All" ? ` with status "${statusFilter}"` : ""}`
           )}
         </motion.div>
       )}
 
       {/* Clients Grid */}
       {filteredClients.length === 0 ? (
-        <Empty
-          title={searchQuery ? "No clients found" : "No clients yet"}
+<Empty
+          title={(searchQuery || statusFilter !== "All") ? "No clients found" : "No clients yet"}
           description={
-            searchQuery
-              ? "Try adjusting your search criteria"
+            (searchQuery || statusFilter !== "All")
+              ? "Try adjusting your search criteria or filters"
               : "Start by adding your first client to get organized"
           }
           icon="Users"

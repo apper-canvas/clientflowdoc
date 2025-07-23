@@ -1,7 +1,21 @@
 import { motion } from "framer-motion";
 import ApperIcon from "@/components/ApperIcon";
+import Badge from "@/components/atoms/Badge";
 
 const ClientCard = ({ client, delay = 0 }) => {
+  const getStatusVariant = (status) => {
+    switch (status) {
+      case 'Active':
+        return 'success';
+      case 'Inactive':
+        return 'secondary';
+      case 'Prospect':
+        return 'primary';
+      default:
+        return 'secondary';
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -35,7 +49,16 @@ const ClientCard = ({ client, delay = 0 }) => {
           <div className="flex items-center text-sm text-gray-600">
             <ApperIcon name="Phone" size={14} className="mr-2 text-gray-400" />
             <span>{client.phone}</span>
-          </div>
+</div>
+        </div>
+        
+        <div className="mt-3 pt-3 border-t border-gray-100">
+          <Badge 
+            variant={getStatusVariant(client.status)} 
+            className="text-xs"
+          >
+            {client.status}
+          </Badge>
         </div>
       </div>
     </motion.div>
