@@ -4,7 +4,7 @@ import ApperIcon from "@/components/ApperIcon";
 import NotificationPanel from "@/components/organisms/NotificationPanel";
 import { notificationService } from "@/services/api/notificationService";
 
-const Header = ({ title, onMenuClick }) => {
+const Header = ({ title, onMenuClick, onSidebarToggle, sidebarCollapsed }) => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
@@ -77,12 +77,19 @@ const handleCloseNotifications = () => {
       className="bg-white border-b border-gray-200 px-4 lg:px-8 py-4"
     >
       <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-4">
+<div className="flex items-center space-x-4">
           <button
             onClick={onMenuClick}
             className="lg:hidden p-2 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
           >
             <ApperIcon name="Menu" size={20} />
+          </button>
+          <button
+            onClick={onSidebarToggle}
+            className="hidden lg:block p-2 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
+            aria-label={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          >
+            <ApperIcon name={sidebarCollapsed ? "PanelLeftOpen" : "PanelLeftClose"} size={20} />
           </button>
           <h1 className="text-2xl font-bold font-display text-gray-900">
             {title}
