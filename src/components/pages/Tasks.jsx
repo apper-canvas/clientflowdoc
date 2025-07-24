@@ -6,6 +6,7 @@ import Loading from "@/components/ui/Loading";
 import Error from "@/components/ui/Error";
 import Empty from "@/components/ui/Empty";
 import Button from "@/components/atoms/Button";
+import EditTaskModal from "@/components/organisms/EditTaskModal";
 import { taskService } from "@/services/api/taskService";
 import { projectService } from "@/services/api/projectService";
 import { toast } from "react-toastify";
@@ -19,7 +20,8 @@ const [tasks, setTasks] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [priorityFilter, setPriorityFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
-
+  const [editingTask, setEditingTask] = useState(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const priorityOptions = [
     { value: "all", label: "All Priorities" },
     { value: "high", label: "High" },
@@ -72,6 +74,29 @@ const handleToggleComplete = async (taskId, completed) => {
     }
   };
 
+  const handleEditTask = (task) => {
+    setEditingTask(task);
+    setIsEditModalOpen(true);
+  };
+
+  const handleUpdateTask = async (taskId, taskData) => {
+    try {
+      const updatedTask = await taskService.update(taskId, taskData);
+      if (updatedTask) {
+        setTasks(prev => 
+          prev.map(task => 
+            task.Id === taskId ? updatedTask : task
+          )
+        );
+        setIsEditModalOpen(false);
+        setEditingTask(null);
+        toast.success("✅ Task updated successfully!");
+      }
+    } catch (err) {
+      toast.error("Failed to update task. Please try again.");
+      console.error("Task update error:", err);
+    }
+  };
   const applyFilters = () => {
     let filtered = [...tasks];
 
@@ -223,17 +248,36 @@ useEffect(() => {
         />
       ) : (
         <div className="space-y-3">
-          {filteredTasks.map((task, index) => (
-<TaskItem
+{filteredTasks.map((task, index) => (
+            <TaskItem
               key={task.Id}
               task={task}
               project={getProjectById(task.projectId)}
               onToggleComplete={handleToggleComplete}
+              onEdit={handleEditTask}
+              delay={index * 0.05}
+            />
+          ))}
+project={getProjectById(task.projectId)}
+              onToggleComplete={handleToggleComplete}
+              onEdit={handleEditTask}
               delay={index * 0.05}
             />
           ))}
         </div>
       )}
+
+      {/* Edit Task Modal */}
+      <EditTaskModal
+        isOpen={isEditModalOpen}
+        onClose={() => {
+          setIsEditModalOpen(false);
+          setEditingTask(null);
+        }}
+        onSubmit={handleUpdateTask}
+        task={editingTask}
+        projects={projects}
+      />
     </div>
   );
 };

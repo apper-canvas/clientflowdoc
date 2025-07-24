@@ -4,7 +4,7 @@ import { format } from "date-fns";
 import ApperIcon from "@/components/ApperIcon";
 import StatusBadge from "@/components/molecules/StatusBadge";
 
-const TaskItem = ({ task, project, onToggleComplete, delay = 0 }) => {
+const TaskItem = ({ task, project, onToggleComplete, onEdit, delay = 0 }) => {
   const [isCompleted, setIsCompleted] = useState(task.completed);
 
   // Update local state when task prop changes
@@ -54,14 +54,25 @@ const TaskItem = ({ task, project, onToggleComplete, delay = 0 }) => {
           {isCompleted && <ApperIcon name="Check" size={14} className="text-white" />}
         </motion.button>
         
-        <div className="flex-1 min-w-0">
+<div className="flex-1 min-w-0">
           <div className="flex items-center justify-between mb-2">
             <h3 className={`text-sm font-medium ${
               isCompleted ? "line-through text-gray-500" : "text-gray-900"
             }`}>
               {task.title}
             </h3>
-            <StatusBadge status={task.priority} />
+            <div className="flex items-center gap-2">
+              <StatusBadge status={task.priority} />
+              {!isCompleted && (
+                <button
+                  onClick={() => onEdit(task)}
+                  className="p-1 text-gray-400 hover:text-gray-600 transition-colors"
+                  title="Edit task"
+                >
+                  <ApperIcon name="Edit2" size={14} />
+                </button>
+              )}
+            </div>
           </div>
           
           <div className="flex items-center space-x-4 text-xs text-gray-500">
