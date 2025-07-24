@@ -83,13 +83,17 @@ const handleClientUpdate = async (clientId, updateData) => {
         setClients(prev => 
           prev.map(c => c.Id === clientId ? updatedClient : c)
         );
-        setFilteredClients(prev => 
-          prev.map(c => c.Id === clientId ? updatedClient : c)
+        const filtered = applyFilters(
+          clients.map(c => c.Id === clientId ? updatedClient : c), 
+          searchQuery, 
+          statusFilter
         );
-        toast.success("Client updated successfully!");
+        setFilteredClients(filtered);
+        toast.success("✅ Client updated successfully!");
       }
     } catch (error) {
-      toast.error("Failed to update client. Please try again.");
+      toast.error("❌ Failed to update client. Please try again.");
+      console.error("Client update error:", error);
     }
   };
 
@@ -191,8 +195,8 @@ actionLabel="Add Client"
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredClients.map((client, index) => (
-            <ClientCard
-key={client.Id}
+<ClientCard
+              key={client.Id}
               client={client}
               delay={index * 0.1}
               onUpdate={handleClientUpdate}

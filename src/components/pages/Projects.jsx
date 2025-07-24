@@ -103,13 +103,14 @@ const handleProjectUpdate = async (projectId, updateData) => {
         
         // Show completion notification
         if (updateData.status === "Completed") {
-          toast.success(`🎉 ${updatedProject.name} has been completed!`);
+          toast.success(`🎉 ${updatedProject.title} has been completed!`);
         } else {
-          toast.success("Project updated successfully!");
+          toast.success("✅ Project updated successfully!");
         }
       }
     } catch (error) {
-      toast.error("Failed to update project. Please try again.");
+      toast.error("❌ Failed to update project. Please try again.");
+      console.error("Project update error:", error);
     }
   };
 
@@ -130,9 +131,8 @@ const handleProjectUpdate = async (projectId, updateData) => {
   }, []);
 
   useEffect(() => {
-    applyFilters();
+applyFilters();
   }, [searchQuery, statusFilter, projects]);
-
   if (loading) {
     return <Loading type="cards" />;
   }

@@ -11,7 +11,7 @@ import { projectService } from "@/services/api/projectService";
 import { toast } from "react-toastify";
 
 const Tasks = () => {
-  const [tasks, setTasks] = useState([]);
+const [tasks, setTasks] = useState([]);
   const [projects, setProjects] = useState([]);
   const [filteredTasks, setFilteredTasks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -55,17 +55,20 @@ const Tasks = () => {
     return projects.find(project => project.Id === projectId);
   };
 
-  const handleToggleComplete = async (taskId, completed) => {
+const handleToggleComplete = async (taskId, completed) => {
     try {
-      await taskService.update(taskId, { completed });
-      setTasks(prev => 
-        prev.map(task => 
-          task.Id === taskId ? { ...task, completed } : task
-        )
-      );
-      toast.success(completed ? "Task completed!" : "Task reopened");
+      const updatedTask = await taskService.update(taskId, { completed });
+      if (updatedTask) {
+        setTasks(prev => 
+          prev.map(task => 
+            task.Id === taskId ? updatedTask : task
+          )
+        );
+        toast.success(completed ? "✅ Task completed!" : "🔄 Task reopened");
+      }
     } catch (err) {
-      toast.error("Failed to update task");
+      toast.error("Failed to update task. Please try again.");
+      console.error("Task update error:", err);
     }
   };
 
@@ -111,7 +114,7 @@ const Tasks = () => {
     loadData();
   }, []);
 
-  useEffect(() => {
+useEffect(() => {
     applyFilters();
   }, [searchQuery, priorityFilter, statusFilter, tasks]);
 
@@ -221,7 +224,7 @@ const Tasks = () => {
       ) : (
         <div className="space-y-3">
           {filteredTasks.map((task, index) => (
-            <TaskItem
+<TaskItem
               key={task.Id}
               task={task}
               project={getProjectById(task.projectId)}

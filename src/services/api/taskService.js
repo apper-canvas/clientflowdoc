@@ -33,14 +33,16 @@ export const taskService = {
     return { ...newTask };
   },
 
-  async update(id, taskData) {
+async update(id, taskData) {
     await delay(350);
-    const index = tasks.findIndex(t => t.Id === parseInt(id));
+    const taskId = parseInt(id);
+    const index = tasks.findIndex(t => t.Id === taskId);
     if (index !== -1) {
-      tasks[index] = { ...tasks[index], ...taskData };
-      return { ...tasks[index] };
+      const updatedTask = { ...tasks[index], ...taskData };
+      tasks[index] = updatedTask;
+      return { ...updatedTask };
     }
-    return null;
+    throw new Error(`Task with ID ${taskId} not found`);
   },
 
   async delete(id) {

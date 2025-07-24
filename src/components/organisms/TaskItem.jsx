@@ -1,11 +1,16 @@
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { format } from "date-fns";
 import ApperIcon from "@/components/ApperIcon";
 import StatusBadge from "@/components/molecules/StatusBadge";
-import { format } from "date-fns";
 
 const TaskItem = ({ task, project, onToggleComplete, delay = 0 }) => {
   const [isCompleted, setIsCompleted] = useState(task.completed);
+
+  // Update local state when task prop changes
+  React.useEffect(() => {
+    setIsCompleted(task.completed);
+  }, [task.completed]);
 
   const handleToggle = () => {
     const newStatus = !isCompleted;
@@ -31,7 +36,7 @@ const TaskItem = ({ task, project, onToggleComplete, delay = 0 }) => {
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay }}
-      className={`bg-white rounded-lg card-shadow p-4 transition-all duration-200 ${
+      className={`bg-white rounded-lg card-shadow hover:card-shadow-hover p-4 transition-all duration-200 ${
         isCompleted ? "opacity-75" : ""
       }`}
     >

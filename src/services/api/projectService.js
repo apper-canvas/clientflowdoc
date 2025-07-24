@@ -37,45 +37,38 @@ export const projectService = {
 
 async update(id, projectData) {
     await delay(350);
-    const index = projects.findIndex(p => p.Id === parseInt(id));
+    const projectId = parseInt(id);
+    const index = projects.findIndex(p => p.Id === projectId);
     if (index !== -1) {
       const oldProject = { ...projects[index] };
-      projects[index] = { ...projects[index], ...projectData };
+      const updatedProject = { ...projects[index], ...projectData };
+      projects[index] = updatedProject;
       
       // Create notification if project was just completed
       if (oldProject.status !== "Completed" && projectData.status === "Completed") {
         try {
           await notificationService.createProjectCompletionNotification(
-            projects[index].name, 
-            projects[index].Id
+            updatedProject.title, 
+            updatedProject.Id
           );
         } catch (error) {
           console.error("Failed to create completion notification:", error);
         }
       }
       
-      return { ...projects[index] };
+      return { ...updatedProject };
     }
-    return null;
+    throw new Error(`Project with ID ${projectId} not found`);
   },
 
-  async delete(id) {
+async delete(id) {
     await delay(300);
-    const index = projects.findIndex(p => p.Id === parseInt(id));
-    if (index !== -1) {
-      const deletedProject = projects.splice(index, 1)[0];
-      return deletedProject;
-    }
-    return null;
-  },
-
-  async delete(id) {
-    await delay(250);
-    const index = projects.findIndex(p => p.Id === parseInt(id));
+    const projectId = parseInt(id);
+    const index = projects.findIndex(p => p.Id === projectId);
     if (index !== -1) {
       const deletedProject = projects.splice(index, 1)[0];
       return { ...deletedProject };
     }
-    return null;
+    throw new Error(`Project with ID ${projectId} not found`);
   }
 };

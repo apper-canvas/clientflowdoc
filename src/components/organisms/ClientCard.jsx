@@ -16,6 +16,19 @@ const ClientCard = ({ client, delay = 0, onUpdate, onDelete }) => {
     }
   };
 
+  const handleStatusToggle = () => {
+    if (onUpdate) {
+      const newStatus = client.status === "Active" ? "Inactive" : "Active";
+      onUpdate(client.Id, { status: newStatus });
+    }
+  };
+
+  const handleDelete = () => {
+    if (onDelete) {
+      onDelete(client.Id, client.name);
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -28,18 +41,16 @@ const ClientCard = ({ client, delay = 0, onUpdate, onDelete }) => {
         <div className="w-12 h-12 bg-gradient-to-br from-primary-100 to-secondary-100 rounded-lg flex items-center justify-center">
           <ApperIcon name="User" size={24} className="text-primary-600" />
         </div>
-<div className="flex items-center gap-1">
+        <div className="flex items-center gap-1">
           <button
-            onClick={() => onUpdate && onUpdate(client.Id, { 
-              status: client.status === "Active" ? "Inactive" : "Active" 
-            })}
+            onClick={handleStatusToggle}
             className="p-1.5 rounded-md text-gray-400 hover:text-blue-600 hover:bg-blue-50 transition-colors"
             title={`Mark as ${client.status === "Active" ? "Inactive" : "Active"}`}
           >
             <ApperIcon name={client.status === "Active" ? "UserX" : "UserCheck"} size={14} />
           </button>
           <button
-            onClick={() => onDelete && onDelete(client.Id, client.name)}
+            onClick={handleDelete}
             className="p-1.5 rounded-md text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors"
             title="Delete Client"
           >
@@ -64,7 +75,7 @@ const ClientCard = ({ client, delay = 0, onUpdate, onDelete }) => {
           <div className="flex items-center text-sm text-gray-600">
             <ApperIcon name="Phone" size={14} className="mr-2 text-gray-400" />
             <span>{client.phone}</span>
-</div>
+          </div>
         </div>
         
         <div className="mt-3 pt-3 border-t border-gray-100">
