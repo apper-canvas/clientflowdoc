@@ -60,6 +60,16 @@ async update(id, projectData) {
   },
 
   async delete(id) {
+    await delay(300);
+    const index = projects.findIndex(p => p.Id === parseInt(id));
+    if (index !== -1) {
+      const deletedProject = projects.splice(index, 1)[0];
+      return deletedProject;
+    }
+    return null;
+  },
+
+  async delete(id) {
     await delay(250);
     const index = projects.findIndex(p => p.Id === parseInt(id));
     if (index !== -1) {

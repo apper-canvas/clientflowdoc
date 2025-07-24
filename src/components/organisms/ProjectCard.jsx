@@ -4,7 +4,7 @@ import StatusBadge from "@/components/molecules/StatusBadge";
 import ProgressBar from "@/components/molecules/ProgressBar";
 import { format } from "date-fns";
 
-const ProjectCard = ({ project, client, delay = 0 }) => {
+const ProjectCard = ({ project, client, delay = 0, onUpdate, onDelete }) => {
   const getStatusIcon = (status) => {
     switch (status?.toLowerCase()) {
       case "completed":
@@ -28,11 +28,31 @@ const ProjectCard = ({ project, client, delay = 0 }) => {
       whileHover={{ scale: 1.02 }}
 className="bg-white rounded-lg card-shadow hover:card-shadow-hover transition-all duration-200 p-8 border border-gray-100"
     >
-      <div className="flex items-start justify-between mb-4">
-<div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
+<div className="flex items-start justify-between mb-4">
+        <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
           <ApperIcon name={getStatusIcon(project.status)} size={24} className="text-gray-600" />
         </div>
-        <StatusBadge status={project.status} />
+        <div className="flex items-center gap-2">
+          <StatusBadge status={project.status} />
+          <div className="flex items-center gap-1">
+            <button
+              onClick={() => onUpdate && onUpdate(project.Id, { 
+                status: project.status === "Completed" ? "In Progress" : "Completed" 
+              })}
+              className="p-1.5 rounded-md text-gray-400 hover:text-blue-600 hover:bg-blue-50 transition-colors"
+              title={project.status === "Completed" ? "Mark as In Progress" : "Mark as Completed"}
+            >
+              <ApperIcon name={project.status === "Completed" ? "RotateCcw" : "CheckCircle"} size={14} />
+            </button>
+            <button
+              onClick={() => onDelete && onDelete(project.Id, project.name)}
+              className="p-1.5 rounded-md text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors"
+              title="Delete Project"
+            >
+              <ApperIcon name="Trash2" size={14} />
+            </button>
+          </div>
+        </div>
       </div>
       
       <div className="space-y-4">

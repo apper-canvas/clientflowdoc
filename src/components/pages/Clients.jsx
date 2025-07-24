@@ -76,7 +76,35 @@ const applyFilters = (clientsList, search, status) => {
       toast.error("Failed to add client. Please try again.");
     }
   };
+const handleClientUpdate = async (clientId, updateData) => {
+    try {
+      const updatedClient = await clientService.update(clientId, updateData);
+      if (updatedClient) {
+        setClients(prev => 
+          prev.map(c => c.Id === clientId ? updatedClient : c)
+        );
+        setFilteredClients(prev => 
+          prev.map(c => c.Id === clientId ? updatedClient : c)
+        );
+        toast.success("Client updated successfully!");
+      }
+    } catch (error) {
+      toast.error("Failed to update client. Please try again.");
+    }
+  };
 
+  const handleClientDelete = async (clientId, clientName) => {
+    if (window.confirm(`Are you sure you want to delete "${clientName}"? This action cannot be undone.`)) {
+      try {
+        await clientService.delete(clientId);
+        setClients(prev => prev.filter(c => c.Id !== clientId));
+        setFilteredClients(prev => prev.filter(c => c.Id !== clientId));
+        toast.success(`"${clientName}" has been deleted successfully.`);
+      } catch (error) {
+        toast.error("Failed to delete client. Please try again.");
+      }
+    }
+  };
   useEffect(() => {
     loadClients();
   }, []);
@@ -164,9 +192,11 @@ actionLabel="Add Client"
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredClients.map((client, index) => (
             <ClientCard
-              key={client.Id}
+key={client.Id}
               client={client}
               delay={index * 0.1}
+              onUpdate={handleClientUpdate}
+              onDelete={handleClientDelete}
             />
           ))}
         </div>

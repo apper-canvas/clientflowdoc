@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import ApperIcon from "@/components/ApperIcon";
 import Badge from "@/components/atoms/Badge";
 
-const ClientCard = ({ client, delay = 0 }) => {
+const ClientCard = ({ client, delay = 0, onUpdate, onDelete }) => {
   const getStatusVariant = (status) => {
     switch (status) {
       case 'Active':
@@ -28,9 +28,24 @@ const ClientCard = ({ client, delay = 0 }) => {
         <div className="w-12 h-12 bg-gradient-to-br from-primary-100 to-secondary-100 rounded-lg flex items-center justify-center">
           <ApperIcon name="User" size={24} className="text-primary-600" />
         </div>
-        <button className="p-2 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors">
-          <ApperIcon name="MoreVertical" size={16} />
-        </button>
+<div className="flex items-center gap-1">
+          <button
+            onClick={() => onUpdate && onUpdate(client.Id, { 
+              status: client.status === "Active" ? "Inactive" : "Active" 
+            })}
+            className="p-1.5 rounded-md text-gray-400 hover:text-blue-600 hover:bg-blue-50 transition-colors"
+            title={`Mark as ${client.status === "Active" ? "Inactive" : "Active"}`}
+          >
+            <ApperIcon name={client.status === "Active" ? "UserX" : "UserCheck"} size={14} />
+          </button>
+          <button
+            onClick={() => onDelete && onDelete(client.Id, client.name)}
+            className="p-1.5 rounded-md text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors"
+            title="Delete Client"
+          >
+            <ApperIcon name="Trash2" size={14} />
+          </button>
+        </div>
       </div>
       
       <div className="space-y-3">

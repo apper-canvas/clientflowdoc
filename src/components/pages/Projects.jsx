@@ -15,7 +15,7 @@ const [projects, setProjects] = useState([]);
   const [clients, setClients] = useState([]);
   const [filteredProjects, setFilteredProjects] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+const [error, setError] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -90,8 +90,7 @@ const handleAddProject = async (projectData) => {
       throw error;
     }
   };
-
-  const handleProjectUpdate = async (projectId, updateData) => {
+const handleProjectUpdate = async (projectId, updateData) => {
     try {
       const updatedProject = await projectService.update(projectId, updateData);
       if (updatedProject) {
@@ -111,6 +110,19 @@ const handleAddProject = async (projectData) => {
       }
     } catch (error) {
       toast.error("Failed to update project. Please try again.");
+    }
+  };
+
+  const handleProjectDelete = async (projectId, projectName) => {
+    if (window.confirm(`Are you sure you want to delete "${projectName}"? This action cannot be undone.`)) {
+      try {
+        await projectService.delete(projectId);
+        setProjects(prev => prev.filter(p => p.Id !== projectId));
+        setFilteredProjects(prev => prev.filter(p => p.Id !== projectId));
+        toast.success(`"${projectName}" has been deleted successfully.`);
+      } catch (error) {
+        toast.error("Failed to delete project. Please try again.");
+      }
     }
   };
   useEffect(() => {
@@ -213,11 +225,13 @@ actionLabel="Create Project"
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredProjects.map((project, index) => (
-            <ProjectCard
+<ProjectCard
               key={project.Id}
               project={project}
               client={getClientById(project.clientId)}
               delay={index * 0.1}
+              onUpdate={handleProjectUpdate}
+              onDelete={handleProjectDelete}
             />
           ))}
         </div>

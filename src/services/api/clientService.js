@@ -27,13 +27,22 @@ export const clientService = {
     clients.push(newClient);
     return { ...newClient };
   },
-
-  async update(id, clientData) {
+async update(id, clientData) {
     await delay(350);
     const index = clients.findIndex(c => c.Id === parseInt(id));
     if (index !== -1) {
       clients[index] = { ...clients[index], ...clientData };
       return { ...clients[index] };
+    }
+    return null;
+  },
+
+  async delete(id) {
+    await delay(300);
+    const index = clients.findIndex(c => c.Id === parseInt(id));
+    if (index !== -1) {
+      const deletedClient = clients.splice(index, 1)[0];
+      return deletedClient;
     }
     return null;
   },

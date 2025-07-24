@@ -6,8 +6,8 @@ import Label from "@/components/atoms/Label";
 import ApperIcon from "@/components/ApperIcon";
 
 const AddProjectModal = ({ isOpen, onClose, onSubmit, clients = [] }) => {
-  const [formData, setFormData] = useState({
-    title: "",
+const [formData, setFormData] = useState({
+    name: "",
     description: "",
     clientId: "",
     deadline: "",
@@ -35,8 +35,8 @@ const AddProjectModal = ({ isOpen, onClose, onSubmit, clients = [] }) => {
   const validateForm = () => {
     const newErrors = {};
     
-    if (!formData.title.trim()) {
-      newErrors.title = "Project name is required";
+if (!formData.name.trim()) {
+      newErrors.name = "Project name is required";
     }
     
     if (!formData.description.trim()) {
@@ -75,9 +75,9 @@ const AddProjectModal = ({ isOpen, onClose, onSubmit, clients = [] }) => {
         createdAt: new Date().toISOString()
       };
       await onSubmit(projectData);
-      // Reset form on success
+// Reset form on success
       setFormData({
-        title: "",
+        name: "",
         description: "",
         clientId: "",
         deadline: "",
@@ -93,8 +93,8 @@ const AddProjectModal = ({ isOpen, onClose, onSubmit, clients = [] }) => {
 
   const handleClose = () => {
     if (!isSubmitting) {
-      setFormData({
-        title: "",
+setFormData({
+        name: "",
         description: "",
         clientId: "",
         deadline: "",
@@ -154,21 +154,21 @@ const AddProjectModal = ({ isOpen, onClose, onSubmit, clients = [] }) => {
             {/* Form */}
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
               {/* Project Name Field */}
-              <div className="space-y-2">
-                <Label htmlFor="title">
+<div className="space-y-2">
+                <Label htmlFor="name">
                   Project Name <span className="text-red-500">*</span>
                 </Label>
                 <Input
-                  id="title"
-                  name="title"
-                  value={formData.title}
+                  id="name"
+                  name="name"
+                  value={formData.name}
                   onChange={handleInputChange}
                   placeholder="Enter project name"
                   disabled={isSubmitting}
-                  className={errors.title ? "border-red-500 focus:border-red-500 focus:ring-red-500/20" : ""}
+                  className={errors.name ? "border-red-500 focus:border-red-500 focus:ring-red-500/20" : ""}
                 />
-                {errors.title && (
-                  <p className="text-sm text-red-600">{errors.title}</p>
+                {errors.name && (
+                  <p className="text-sm text-red-600">{errors.name}</p>
                 )}
               </div>
               
