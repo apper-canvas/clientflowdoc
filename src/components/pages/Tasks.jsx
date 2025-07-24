@@ -247,18 +247,12 @@ useEffect(() => {
           onAction={() => console.log("Add task")}
         />
       ) : (
-        <div className="space-y-3">
-{filteredTasks.map((task, index) => (
+<div className="space-y-3">
+          {filteredTasks.map((task, index) => (
             <TaskItem
               key={task.Id}
               task={task}
               project={getProjectById(task.projectId)}
-              onToggleComplete={handleToggleComplete}
-              onEdit={handleEditTask}
-              delay={index * 0.05}
-            />
-          ))}
-project={getProjectById(task.projectId)}
               onToggleComplete={handleToggleComplete}
               onEdit={handleEditTask}
               delay={index * 0.05}
